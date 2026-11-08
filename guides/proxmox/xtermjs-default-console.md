@@ -131,3 +131,7 @@ apt install --reinstall pve-manager
 ```
 
 To remove it completely, also delete the apt hook (`/etc/apt/apt.conf.d/99-pve-xtermjs-console-patch`) and the script.
+
+## References
+
+https://forum.proxmox.com/threads/feature-request-add-option-to-set-default-console-viewer-for-vms.156515/
