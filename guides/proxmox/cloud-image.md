@@ -39,7 +39,7 @@ There are settings you can change on the Proxmox Web UI for the VM
 
 These settings are applied on each boot so changing them and then rebooting applies.
 
-To setup more advanced provisioning, a **cloud-init script** is required.
+To setup more advanced provisioning, a **cloud-init script** is required. My current one lives [here](../../guides/proxmox/cloud-image.md)
 
 Create a basic cloud-init script
 ```
