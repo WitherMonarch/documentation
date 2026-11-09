@@ -5,7 +5,7 @@ Homelab notes, guides and quality-of-life tips, written as I build and fix thing
 ## Contents
 
 - [`guides/`](guides/): step-by-step how-tos (Proxmox and more)
-- `homelab/`: notes on my own setup (added over time)
+- [`homelab/`](homelab/): notes on my own setup (added over time)
 - `tips/`: small fixes, snippets and cheat sheets (added over time)
 
 ## Notes
