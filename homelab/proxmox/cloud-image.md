@@ -5,7 +5,8 @@
 Version 2 - Debian 13
 
 - xtermjs default console (serial 0)
-- CPU hotplug (numa)
+- CPU hotplug (NUMA)
+- RAM hotplug (NUMA)
 - ipv6 disabled
 - serial console colored and resize on the fly
 - kernel logging to warning and not debug
