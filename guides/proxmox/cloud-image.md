@@ -89,8 +89,8 @@ rm /root/debian-13-generic-amd64.qcow2
 ## Useful info and limitations
 
 
-- NEVER edit a Cloud-Init script if a VM already references it, modifying the script will make all VMs using it re-apply it on next boot. Instead, use versioned configs (v1, v2, v3, etc.) and reference those for the VMs.
-- Never resize the disk before cloning the VM, it will make the clone slower. You can, however, clone the VM, then go to **VM**, **Hardware**, **Hard Disk (scsi0)**, **Edit**, **Resize**, and enter a number of GiB to add (no downsizing). This change will be applied on VM reboot or if these commands are entered in the VM.
+- NEVER edit a Cloud-Init script if a VM already references it, modifying the script will make all VMs using it re-apply it on next boot. Instead, use immutable versioned configs (v1, v2, v3, etc.) for each change and reference those for the VMs.
+- Don't resize the disk before cloning the VM, it will make the clone slower. You can, however, clone the VM, then go to **VM**, **Hardware**, **Hard Disk (scsi0)**, **Edit**, **Resize**, and enter a number of GiB to add (no downsizing). This change will be applied on VM reboot or if these commands are entered in the VM.
 ```
 sudo cloud-init single --name growpart
 sudo cloud-init single --name resizefs
