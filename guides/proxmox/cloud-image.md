@@ -43,7 +43,7 @@ To setup more advanced provisioning, a **cloud-init script** is required. My cur
 
 Create a basic cloud-init script
 ```
-cat <<'EOF' > /var/lib/vz/snippets/debian13-cloud.yaml
+cat <<'EOF' > /var/lib/vz/snippets/debian13-cloud-v1.yaml
 #cloud-config
 timezone: America/Toronto
 
@@ -75,7 +75,7 @@ EOF
 
 Assign the script to the template VM, every guest cloned from it will inherit it. After this, the VM is ready to be cloned and used.
 ```
-qm set 100 --cicustom vendor=local:snippets/debian13-cloud.yaml
+qm set 100 --cicustom vendor=local:snippets/debian13-cloud-v1.yaml
 ```
 > Using **vendor** instead of **user** will not overwrite the Proxmox Cloud-Init configuration.
 
@@ -88,6 +88,8 @@ rm /root/debian-13-generic-amd64.qcow2
 
 ## Useful info and limitations
 
+
+- NEVER edit a Cloud-Init script if a VM already references it, modifying the script will make all VMs using it re-apply it on next boot. Instead, use versioned configs (v1, v2, v3, etc.) and reference those for the VMs.
 - Never resize the disk before cloning the VM, it will make the clone slower. You can, however, clone the VM, then go to **VM**, **Hardware**, **Hard Disk (scsi0)**, **Edit**, **Resize**, and enter a number of GiB to add (no downsizing). This change will be applied on VM reboot or if these commands are entered in the VM.
 ```
 sudo cloud-init single --name growpart
