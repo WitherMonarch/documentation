@@ -44,7 +44,7 @@ Custom role `ClaudeBackup` with:
 - `Datastore.AllocateSpace`
 - `Datastore.Audit`: reads storage status during inspection
 
-The account can't change VM power state or configuration, and can't delete or restore backups. In the tested setup.
+The account can't change VM power state or configuration, and can't delete or restore backups.
 
 ## Proxmox setup
 
