@@ -1,6 +1,6 @@
 # Proxmox VM backups from Claude Code
 
-Tested with: Debian 13 (trixie) Claude Code VM, GNU bash 5.2.37, curl 8.14.1, jq 1.7, against a Proxmox VE 9 node (exact minor version not recorded).
+Tested with: Debian 13 (trixie) Claude Code VM, GNU bash 5.2.37, curl 8.14.1, jq 1.7, against a Proxmox VE 9 node.
 
 A restricted Proxmox VE API integration that lets Claude Code, running in its own VM, start and monitor snapshot backups of individual QEMU VMs. The user requests a backup with `/backup <vmid> [comment]`. Claude Code inspects the VM and storage, then asks for explicit confirmation before it starts anything.
 
@@ -44,7 +44,7 @@ Custom role `ClaudeBackup` with:
 - `Datastore.AllocateSpace`
 - `Datastore.Audit`: reads storage status during inspection
 
-The account can't change VM power state or configuration, and can't delete or restore backups. In the tested setup, `Sys.Audit` wasn't needed to monitor the status of the token's own backup task.
+The account can't change VM power state or configuration, and can't delete or restore backups. In the tested setup.
 
 ## Proxmox setup
 
