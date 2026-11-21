@@ -1,6 +1,6 @@
 # Proxmox backup script
 
-Script for the [Proxmox VM backup integration](proxmox-claude-backup.md). Install it as `~/.local/bin/proxmox-backup.sh` with mode `700`. It reads its settings from `~/.config/proxmox/backup.env` and contains no site-specific values.
+Script for the [Proxmox VM backup integration](README.md). Install it as `~/.local/bin/proxmox-backup.sh` with mode `700`. It reads its settings from `~/.config/proxmox/backup.env` and contains no site-specific values.
 
 Tested: `inspect` and `start` on Debian 13 with bash 5.2.37, curl 8.14.1 and jq 1.7.
 

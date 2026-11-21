@@ -1,6 +1,6 @@
 # Proxmox Claude backup: topology
 
-How the [Proxmox VM backup integration](proxmox-claude-backup.md) is laid out on the Claude Code VM, and how a request flows through it.
+How the [Proxmox VM backup integration](README.md) is laid out on the Claude Code VM, and how a request flows through it.
 
 ## Client filesystem
 

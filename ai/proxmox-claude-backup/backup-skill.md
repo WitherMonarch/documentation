@@ -1,6 +1,6 @@
 # Claude Code backup skill
 
-Skill for the [Proxmox VM backup integration](proxmox-claude-backup.md). Install it as `~/.claude/skills/backup/SKILL.md` and replace `<pve-node>` with your node name. `disable-model-invocation: true` means the skill runs only when the user types `/backup`.
+Skill for the [Proxmox VM backup integration](README.md). Install it as `~/.claude/skills/backup/SKILL.md` and replace `<pve-node>` with your node name. `disable-model-invocation: true` means the skill runs only when the user types `/backup`.
 
 ````markdown
 ---

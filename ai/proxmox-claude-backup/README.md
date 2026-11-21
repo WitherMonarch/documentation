@@ -9,12 +9,13 @@ Related pages:
 - [Topology and execution flow](topology.md)
 - [Backup script](proxmox-backup-script.md)
 - [Claude Code skill](backup-skill.md)
+- [Example client configuration](backup.env.example)
 
 ## Testing status
 
+- **Tested:** the Proxmox-side setup commands below (role, user, token and ACLs), run as written on a Proxmox VE 9 node.
 - **Tested:** `inspect` and `start` on the Claude Code VM against one QEMU VM, with snapshot mode, the `local` storage, the backup comment (notes) and UPID task monitoring through to `BACKUP SUCCESSFUL`.
-- **Unverified:** the Proxmox-side setup commands below (user, role, token, ACLs). They were checked against the Proxmox documentation but not run as written here. Check them with `pveum help` on your PVE version.
-- **Unverified:** the ACL paths shown. Scope them to your own environment.
+- **Tested:** both TLS settings: `PVE_VERIFY_TLS="true"` with a certificate the client trusts, and `PVE_VERIFY_TLS="false"` with the default self-signed Proxmox certificate.
 
 ## Design
 
@@ -47,7 +48,7 @@ The account can't change VM power state or configuration, and can't delete or re
 
 ## Proxmox setup
 
-Unverified: syntax checked against the `pveum` man page for PVE 9.2, but not run as written. Run these as root on a Proxmox node.
+Run these as root on a Proxmox node.
 
 ```bash
 pveum role add ClaudeBackup --privs "VM.Backup VM.Audit Datastore.AllocateSpace Datastore.Audit"
@@ -57,7 +58,7 @@ pveum user token add <api-user>@pve <token-name> --privsep 1
 
 The token secret is shown only once, when the token is created. Store it straight in the client configuration file (see below).
 
-With privilege separation, the token's effective permissions are the intersection of the user's ACLs and the token's ACLs, so give both the role. Example scoping (adjust the paths; `/vms` covers every VM):
+With privilege separation, the token's effective permissions are the intersection of the user's ACLs and the token's ACLs, so give both the role. `/vms` covers every VM. To limit backups to specific VMs, use `/vms/<vmid>` instead. Both forms were tested.
 
 ```bash
 pveum acl modify /vms --roles ClaudeBackup --users <api-user>@pve
@@ -76,16 +77,7 @@ mkdir -p ~/.config/proxmox ~/.local/bin ~/.claude/skills/backup
 chmod 700 ~/.config/proxmox
 ```
 
-Create `~/.config/proxmox/backup.env` with mode `600`:
-
-```bash
-PVE_HOST="https://<pve-address>:8006"
-PVE_NODE="<pve-node>"
-PVE_STORAGE="<backup-storage>"
-PVE_TOKEN_ID="<api-user>@pve!<token-name>"
-PVE_TOKEN_SECRET="<token-secret>"
-PVE_VERIFY_TLS="true"
-```
+Copy [`backup.env.example`](backup.env.example) to `~/.config/proxmox/backup.env`, set its mode to `600`, and replace the placeholders. Read the comment on `PVE_VERIFY_TLS` before you choose a value.
 
 Install the [backup script](proxmox-backup-script.md) as `~/.local/bin/proxmox-backup.sh` (mode `700`), and the [skill](backup-skill.md) as `~/.claude/skills/backup/SKILL.md`.
 
@@ -106,7 +98,7 @@ If you leave out the comment, Claude Code suggests one. Claude Code then shows t
 
 ## Security considerations
 
-- **TLS verification:** keep `PVE_VERIFY_TLS="true"`. Setting it to `false` makes curl use `--insecure`. Then anyone who can intercept traffic between the VM and the node can impersonate the API and capture the token. Install a trusted certificate on the node instead, or add the node's CA to the client's trust store. In the tested setup, verification was temporarily turned off. That's a known gap to fix.
+- **TLS verification:** a node that still uses the default self-signed Proxmox certificate fails verification. In that case, set `PVE_VERIFY_TLS="false"`, or every request fails. The risk is that curl then runs with `--insecure` and doesn't check the server's identity. Anyone who can intercept traffic between the VM and the node could impersonate the API and capture the token. Keep the two on a trusted network segment. Once the node has a certificate the client trusts, set the value to `"true"`.
 - The token is passed to curl through a process-substitution config file, not as a command-line argument, so it doesn't show up in the process list.
 - The script rejects symlinked configuration files, newlines in values, non-numeric VMIDs, and comments that span more than one line or are longer than 1024 characters.
 - Never commit the real `backup.env`. Keep only a template with placeholders under version control.
